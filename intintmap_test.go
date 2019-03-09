@@ -6,8 +6,8 @@ import (
 
 func TestMapSimple(t *testing.T) {
 	m := New(10, 0.99)
-	var i int64
-	var v int64
+	var i uint64
+	var v uint64
 	var ok bool
 
 	// --------------------------------------------------------------------
@@ -32,7 +32,7 @@ func TestMapSimple(t *testing.T) {
 	// --------------------------------------------------------------------
 	// Keys()
 
-	m0 := make(map[int64]int64, 1000)
+	m0 := make(map[uint64]uint64, 1000)
 	for i = 0; i < 20000; i += 2 {
 		m0[i] = i
 	}
@@ -54,7 +54,7 @@ func TestMapSimple(t *testing.T) {
 	// --------------------------------------------------------------------
 	// Items()
 
-	m0 = make(map[int64]int64, 1000)
+	m0 = make(map[uint64]uint64, 1000)
 	for i = 0; i < 20000; i += 2 {
 		m0[i] = i
 	}
@@ -111,11 +111,11 @@ func TestMapSimple(t *testing.T) {
 func TestMap(t *testing.T) {
 	m := New(10, 0.6)
 	var ok bool
-	var v int64
+	var v uint64
 
-	step := int64(61)
+	step := uint64(61)
 
-	var i int64
+	var i uint64
 	m.Put(0, 12345)
 	for i = 1; i < 100000000; i += step {
 		m.Put(i, i+7)
@@ -152,7 +152,7 @@ const MAX = 999999999
 const STEP = 9534
 
 func fillIntIntMap(m *Map) {
-	var j int64
+	var j uint64
 	for j = 0; j < MAX; j += STEP {
 		m.Put(j, -j)
 		for k := j; k < j+16; k++ {
@@ -162,8 +162,8 @@ func fillIntIntMap(m *Map) {
 	}
 }
 
-func fillStdMap(m map[int64]int64) {
-	var j int64
+func fillStdMap(m map[uint64]uint64) {
+	var j uint64
 	for j = 0; j < MAX; j += STEP {
 		m[j] = -j
 		for k := j; k < j+16; k++ {
@@ -181,18 +181,18 @@ func BenchmarkIntIntMapFill(b *testing.B) {
 
 func BenchmarkStdMapFill(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		m := make(map[int64]int64, 2048)
+		m := make(map[uint64]uint64, 2048)
 		fillStdMap(m)
 	}
 }
 
 func BenchmarkIntIntMapGet10PercentHitRate(b *testing.B) {
-	var j, k, v, sum int64
+	var j, k, v, sum uint64
 	var ok bool
 	m := New(2048, 0.60)
 	fillIntIntMap(m)
 	for i := 0; i < b.N; i++ {
-		sum = int64(0)
+		sum = uint64(0)
 		for j = 0; j < MAX; j += STEP {
 			for k = j; k < 10; k++ {
 				if v, ok = m.Get(k); ok {
@@ -205,12 +205,12 @@ func BenchmarkIntIntMapGet10PercentHitRate(b *testing.B) {
 }
 
 func BenchmarkStdMapGet10PercentHitRate(b *testing.B) {
-	var j, k, v, sum int64
+	var j, k, v, sum uint64
 	var ok bool
-	m := make(map[int64]int64, 2048)
+	m := make(map[uint64]uint64, 2048)
 	fillStdMap(m)
 	for i := 0; i < b.N; i++ {
-		sum = int64(0)
+		sum = uint64(0)
 		for j = 0; j < MAX; j += STEP {
 			for k = j; k < 10; k++ {
 				if v, ok = m[k]; ok {
@@ -223,12 +223,12 @@ func BenchmarkStdMapGet10PercentHitRate(b *testing.B) {
 }
 
 func BenchmarkIntIntMapGet100PercentHitRate(b *testing.B) {
-	var j, v, sum int64
+	var j, v, sum uint64
 	var ok bool
 	m := New(2048, 0.60)
 	fillIntIntMap(m)
 	for i := 0; i < b.N; i++ {
-		sum = int64(0)
+		sum = uint64(0)
 		for j = 0; j < MAX; j += STEP {
 			if v, ok = m.Get(j); ok {
 				sum += v
@@ -239,12 +239,12 @@ func BenchmarkIntIntMapGet100PercentHitRate(b *testing.B) {
 }
 
 func BenchmarkStdMapGet100PercentHitRate(b *testing.B) {
-	var j, v, sum int64
+	var j, v, sum uint64
 	var ok bool
-	m := make(map[int64]int64, 2048)
+	m := make(map[uint64]uint64, 2048)
 	fillStdMap(m)
 	for i := 0; i < b.N; i++ {
-		sum = int64(0)
+		sum = uint64(0)
 		for j = 0; j < MAX; j += STEP {
 			if v, ok = m[j]; ok {
 				sum += v
